@@ -8,6 +8,10 @@ function Home() {
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
 
+    useEffect(() => {
+        getNotes();
+    }, []);
+
     const getNotes = () => {
         api
         .get("/api/notes/")
@@ -29,7 +33,11 @@ function Home() {
     const createNote = (e) => {
         e.preventDefault();
         api.post("/api/notes/", {content, title}).then((res) => {
-            if (res.status === 201) alert("Note created")
+            if (res.status === 201) {
+                alert("Note created")
+                setTitle("");
+                setContent("");
+            }
             else alert("An error occurred in creating the note.")
             getNotes();
         }).catch((err) => alert(err))
